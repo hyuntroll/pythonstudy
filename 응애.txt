@@ -1,0 +1,4 @@
+git clone https://github.com/hyuntroll/pythonstudy.git
+git pull origin master
+git commit -m "vs name"
+git git push origin master
