@@ -22,5 +22,4 @@ def tts(string_file, name):
     tts.save(name) 
     playsound(name)
 
-tts(s_str, "nice_to_meet_you.mp3")
-tts(read_file, "sorry.mp3")
+

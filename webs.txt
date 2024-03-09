@@ -1,0 +1,4 @@
+www.google.com
+www.youtube.com
+github.com/hyuntroll/pythonstudy
+blog.naver.com/luigihsm7/223378514876
