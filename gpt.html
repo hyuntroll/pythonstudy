@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Magnetic Attraction</title>
+<style>
+    body {
+        margin: 0;
+        overflow: hidden;
+    }
+    canvas {
+        display: block;
+        cursor: pointer;
+    }
+</style>
+</head>
+<body>
+<canvas id="canvas" width="1920" height="1080"></canvas>
+
+<script>
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
+
+    // 원 객체 생성
+    const circle1 = {
+        x: 100,
+        y: 100,
+        radius: 50,
+        color: 'blue',
+        isDragging: false
+    };
+
+    const circle2 = {
+        x: 300,
+        y: 100,
+        radius: 50,
+        color: 'red',
+        isDragging: false
+    };
+
+    // 원 그리기
+    function drawCircle(circle) {
+        ctx.beginPath();
+        ctx.arc(circle.x, circle.y, circle.radius, 0, Math.PI * 2);
+        ctx.fillStyle = circle.color;
+        ctx.fill();
+        ctx.closePath();
+    }
+
+    // 캔버스 업데이트
+    function update() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        // 원 그리기
+        drawCircle(circle1);
+        drawCircle(circle2);
+
+        // 자성 효과 - 가까워질 때
+        const distance = Math.sqrt((circle1.x - circle2.x) ** 2 + (circle1.y - circle2.y) ** 2);
+        const minDistance = circle1.radius + circle2.radius;
+
+        if (distance < minDistance) {
+            // 자성 효과 발생
+            const forceX = (circle2.x - circle1.x) * 0.05;
+            const forceY = (circle2.y - circle1.y) * 0.05;
+
+            circle1.x += forceX;
+            circle1.y += forceY;
+            circle2.x -= forceX;
+            circle2.y -= forceY;
+
+            // 두 원이 딱 붙지 않도록 수정
+            if (distance < minDistance * 0.8) {
+                circle1.x -= forceX;
+                circle1.y -= forceY;
+                circle2.x += forceX;
+                circle2.y += forceY;
+            }
+        }
+
+        requestAnimationFrame(update);
+    }
+
+    update();
+
+    // 마우스 이벤트
+    canvas.addEventListener('mousedown', function(e) {
+        const mouseX = e.clientX - canvas.getBoundingClientRect().left;
+        const mouseY = e.clientY - canvas.getBoundingClientRect().top;
+
+        if (distance(mouseX, mouseY, circle1.x, circle1.y) < circle1.radius) {
+            circle1.isDragging = true;
+        }
+
+        if (distance(mouseX, mouseY, circle2.x, circle2.y) < circle2.radius) {
+            circle2.isDragging = true;
+        }
+    });
+
+    canvas.addEventListener('mousemove', function(e) {
+        const mouseX = e.clientX - canvas.getBoundingClientRect().left;
+        const mouseY = e.clientY - canvas.getBoundingClientRect().top;
+
+        if (circle1.isDragging) {
+            circle1.x = mouseX;
+            circle1.y = mouseY;
+        }
+
+        if (circle2.isDragging) {
+            circle2.x = mouseX;
+            circle2.y = mouseY;
+        }
+    });
+
+    canvas.addEventListener('mouseup', function() {
+        circle1.isDragging = false;
+        circle2.isDragging = false;
+    });
+
+    // 거리 계산 함수
+    function distance(x1, y1, x2, y2) {
+        return Math.sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2);
+    }
+</script>
+</body>
+</html>
