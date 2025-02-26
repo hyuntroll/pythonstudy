@@ -17,4 +17,4 @@ while True:
         
         game_count +=1
     except: #input에 이상한 값이 들어가 오류가 날 때 예외처리
-        print("에러가 발생했습니다. 숫자를 입력하세요.")
+        print("에러가 발생했습니다. 숫자를 입력하세요.12")
